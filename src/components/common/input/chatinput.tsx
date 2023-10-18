@@ -27,7 +27,7 @@ const ChatInput = (props: any) => {
             text: currentChat,
           })
           .then((res) => {
-            return setChatData({
+            setChatData({
               string: res.data.content,
               isMyChat: false,
             });
