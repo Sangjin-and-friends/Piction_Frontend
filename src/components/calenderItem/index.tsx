@@ -8,11 +8,7 @@ interface DateItem {
   date: string;
 }
 
-const DATE: DateItem[] = [
-  { id: 0, date: "2017-01-25" },
-  { id: 1, date: "2017-01-26" },
-  { id: 2, date: "2017-01-27" },
-];
+const DATE: DateItem[] = [{ id: 0, date: dayjs().format("YYYY-MM-DD") }];
 
 const App = () => {
   const [value, setValue] = useState<Dayjs>(dayjs(DATE[0].date));
@@ -27,7 +23,7 @@ const App = () => {
         <div
           className="ant-picker-cell-inner"
           style={{
-            backgroundColor: "green",
+            backgroundColor: "#0052ff",
             width: "90px",
             height: "90px",
             padding: "10px",
@@ -69,6 +65,6 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 8rem;
   .ant-picker-cell-selected .ant-picker-cell-inner {
-    background-color: #0052ff !important;
+    background-color: green !important;
   }
 `;
