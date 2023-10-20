@@ -1,17 +1,7 @@
 import { styled } from "styled-components";
 import * as C from "../../components/index";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const NotLoggedIn = () => {
-  const Navigate = useNavigate();
-
-  useEffect(() => {
-    setTimeout(() => {
-      Navigate("/record/step4");
-    }, 15000);
-  }, []);
-
   return (
     <>
       <C.Header />

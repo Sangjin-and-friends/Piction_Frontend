@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { SignUpInfo, LoginInfo, UserInfo } from "../../../state";
@@ -7,26 +7,37 @@ import { SignUpInfo, LoginInfo, UserInfo } from "../../../state";
 const RegisterButton = (props: { string: string; method: string }) => {
   const [signUpInfo, setSignUpInfo] = useRecoilState(SignUpInfo);
   const [loginInfo, setLoginInfo] = useRecoilState(LoginInfo);
-  const [userInfo, setUserInfo] = useRecoilState(UserInfo);
+  const router = useNavigate();
 
   return (
     <Container
       onClick={
         props.method === "signup"
           ? async () => {
-              const response = await axios.post("http://localhost:3232/api/auth/signup", {
-                signUpInfo,
-              });
+              const response = await axios.post(
+                "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/auth/signup",
+                {
+                  name: signUpInfo.name,
+                  userId: signUpInfo.id,
+                  password: signUpInfo.pw,
+                }
+              );
+
+              console.log(response);
+              router(0);
             }
           : async () => {
-            const response = await axios.post("http://localhost:3232/api/auth/login", {
-                loginInfo,
-              });
+              const response = await axios.post(
+                "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/auth/signin",
+                {
+                  userId: loginInfo.id,
+                  password: loginInfo.pw,
+                }
+              );
+              console.log(response);
 
-              setUserInfo({
-                name: response,
-
-              })
+              localStorage.setItem("userName", response.data[0]);
+              localStorage.setItem("userId", response.data[1]);
             }
       }
       to="/"

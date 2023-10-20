@@ -9,6 +9,21 @@ const RecordStep3 = () => {
   const [diaryInfo, setDiaryInfo] = useRecoilState(DiaryInfo);
   const [imgInfo, setImgInfo] = useRecoilState(ImgInfo);
 
+  const postImage = () => {
+    const userInfo = {
+      userId: diaryInfo.date,
+      subject: diaryInfo.diaryTitle,
+    };
+    axios
+      .post(
+        "/https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app//api/image",
+        userInfo
+      )
+      .then(() => {
+        console.log("성공");
+      });
+  };
+
   return (
     <>
       <C.Header />
@@ -35,23 +50,7 @@ const RecordStep3 = () => {
             placeholder="오늘 있었던 일을 기록해 주세요."
           />
         </TextSection>
-        <NextButton
-          to="/notloggedin"
-          onClick={async () => {
-            const response = await axios.post(
-              "http://localhost:3232/api/image/create",
-              {
-                diaryInfo,
-              }
-            );
-
-            setImgInfo({
-              imgurl: response,
-            });
-          }}
-        >
-          {">"}
-        </NextButton>
+        <NextButton onClick={postImage}>{">"}</NextButton>
       </Container>
     </>
   );
@@ -122,7 +121,7 @@ const TextArea = styled.textarea`
   }
 `;
 
-const NextButton = styled(Link)`
+const NextButton = styled.div`
   height: 65%;
   margin-top: 90px;
   width: 3%;
