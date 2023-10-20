@@ -3,8 +3,8 @@ import { Calendar } from "antd";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { error } from "console";
 
 interface DateItem {
   id: number;
@@ -25,21 +25,17 @@ const App = () => {
 
   console.log(yearAndMonth);
   useEffect(() => {
-    const userInfo = {
-      date: yearAndMonth,
-      userId: localStorage.getItem("userId"),
-    };
     axios
       .post(
         "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/diary/calendar",
-        userInfo
+        { date: yearAndMonth, userId: localStorage.getItem("userId") }
       )
       .then((res) => {
         console.log("성공");
         setDiaryInfo(res.data);
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -110,6 +106,6 @@ const Container = styled.div`
   margin: auto;
   padding-top: 8rem;
   .ant-picker-cell-selected .ant-picker-cell-inner {
-    background-color: green !important;
+    background-color: #97b0ff !important;
   }
 `;

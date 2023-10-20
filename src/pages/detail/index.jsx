@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import * as C from "../../components/index";
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Detail = () => {
@@ -9,6 +9,7 @@ const Detail = () => {
 
   console.log("id", id);
   const ids = localStorage.getItem("userId");
+  const [data, setData] = useState();
 
   useEffect(() => {
     axios
@@ -19,25 +20,29 @@ const Detail = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  console.log(data?.imageURL);
+
   return (
     <>
       <C.Header />
       <Container>
         <Title>{id} 나의 일기에요 😙</Title>
-        {/* <MainElementSection>
-          <ImgSection url={imgInfo.imgurl} />
+        <MainElementSection>
+          <ImgSection url={data?.imageURL} />
           <DiarySection>
-            <DiaryTitle>{diaryInfo.diaryTitle}</DiaryTitle>
-            <DiaryParagraph>{diaryInfo.diaryContent}</DiaryParagraph>
+            <DiarySection>
+              <DiaryTitle>{data?.subject}</DiaryTitle>
+              <DiaryParagraph>{data?.contents}</DiaryParagraph>
+            </DiarySection>
           </DiarySection>
-        </MainElementSection> */}
+        </MainElementSection>
       </Container>
     </>
   );
@@ -65,6 +70,16 @@ const Container = styled.div`
   padding-top: 7.25rem;
 
   box-sizing: border-box;
+`;
+
+const ImgSection = styled.div`
+  width: 28.75rem;
+  height: 28.75rem;
+
+  background-image: url("${(props) => props.url}");
+  background-size: cover;
+
+  border-radius: 1rem 0 0 1rem;
 `;
 
 const MainElementSection = styled.div`
