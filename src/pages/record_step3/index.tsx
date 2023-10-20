@@ -42,7 +42,6 @@ const RecordStep3 = () => {
         setResponse(res.data);
       });
   };
-
   return (
     <>
       <C.Header />
