@@ -25,9 +25,7 @@ const RecordStep4 = () => {
           to="/calender"
           onClick={() => {
             setDiaryInfo({
-              year: 0,
-              month: 0,
-              date: 0,
+              date: "",
               emotion1: "",
               emotion2: "",
               emotion3: "",

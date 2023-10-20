@@ -16,12 +16,8 @@ const RecordStep1 = () => {
   useEffect(() => {
     setDiaryInfo({
       ...diaryInfo,
-      year: Number(year),
-      month: Number(month),
-      date: Number(day),
+      date: `${year}-${month}-${day}`,
     });
-
-    console.log(diaryInfo);
   }, [year, month, day]);
 
   return (

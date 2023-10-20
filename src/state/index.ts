@@ -26,9 +26,7 @@ export const ChatData = atom({
 export const DiaryInfo = atom({
   key: "DiaryInfo",
   default: {
-    year: 0,
-    month: 0,
-    date: 0,
+    date: "",
     emotion1: "",
     emotion2: "",
     emotion3: "",
@@ -67,5 +65,5 @@ export const UserInfo = atom<any>({
     name: "",
     id: "",
     pw: "",
-  }
-})
+  },
+});
