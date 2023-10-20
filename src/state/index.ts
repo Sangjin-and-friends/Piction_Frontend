@@ -54,9 +54,7 @@ export const LoginInfo = atom({
 
 export const ImgInfo = atom<any>({
   key: "ImgInfo",
-  default: {
-    imgurl: "",
-  },
+  default: "",
 });
 
 export const UserInfo = atom<any>({

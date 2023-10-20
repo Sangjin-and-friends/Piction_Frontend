@@ -1,13 +1,47 @@
 import { styled } from "styled-components";
 import * as C from "../../components/index";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { DiaryInfo, ImgInfo } from "../../state";
+import { useEffect, useRef, useState } from "react";
 
 const RecordStep3 = () => {
   const [diaryInfo, setDiaryInfo] = useRecoilState(DiaryInfo);
   const [imgInfo, setImgInfo] = useRecoilState(ImgInfo);
+  const [response, setResponse] = useState();
+  const router = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const Didmount = useRef(false);
+
+  useEffect(() => {
+    if (Didmount.current) {
+      router("/record/step4");
+    } else Didmount.current = true;
+  }, [response]);
+
+  const postImage = () => {
+    const userInfo = {
+      userId: diaryInfo.date,
+      subject: diaryInfo.diaryTitle,
+    };
+
+    setIsLoading(true);
+
+    axios
+      .post(
+        "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/image",
+        {
+          userId: localStorage.getItem("userId"),
+          subject: diaryInfo.diaryTitle,
+        }
+      )
+      .then((res) => {
+        setImgInfo(res.data);
+        setResponse(res.data);
+      });
+  };
 
   return (
     <>
@@ -35,23 +69,14 @@ const RecordStep3 = () => {
             placeholder="오늘 있었던 일을 기록해 주세요."
           />
         </TextSection>
-        <NextButton
-          to="/notloggedin"
-          onClick={async () => {
-            const response = await axios.post(
-              "http://localhost:3232/api/image/create",
-              {
-                diaryInfo,
-              }
-            );
-
-            setImgInfo({
-              imgurl: response,
-            });
-          }}
-        >
-          {">"}
-        </NextButton>
+        <NextButton onClick={postImage}>{">"}</NextButton>
+        {isLoading && (
+          <LoadingContainer>
+            <LoadingText>
+              일기 내용을 바탕으로 멋진 사진을 생성 중이니 조금만 기다려주세요.
+            </LoadingText>
+          </LoadingContainer>
+        )}
       </Container>
     </>
   );
@@ -82,6 +107,7 @@ const TextWrapper = styled.div`
 const Input = styled.input`
   padding: 22px;
   width: 100%;
+  height: 80px;
   font-family: "NanumSquareRound";
   font-size: 1.5rem;
   border-radius: 10px;
@@ -122,8 +148,8 @@ const TextArea = styled.textarea`
   }
 `;
 
-const NextButton = styled(Link)`
-  height: 65%;
+const NextButton = styled.div`
+  height: 395px;
   margin-top: 90px;
   width: 3%;
 
@@ -149,4 +175,32 @@ const NextButton = styled(Link)`
     width: 6%;
     cursor: pointer;
   }
+`;
+
+const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("/images/loading.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 5rem;
+  background-color: black;
+  opacity: 0.3;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+`;
+
+const LoadingText = styled.div`
+  font-family: "NanumSquareRound";
+  font-size: 2rem;
+  margin-top: 8rem;
+  color: white;
 `;

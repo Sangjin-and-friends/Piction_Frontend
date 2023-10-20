@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import * as C from "../../components/index";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { DiaryInfo } from "../../state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { DiaryInfo, UserInfo } from "../../state";
 
 const RecordStep2 = () => {
   const [diaryInfo, setDiaryInfo] = useRecoilState(DiaryInfo);
+  const userInfo = useRecoilValue(UserInfo);
 
   const [badEmotionList, setBadEmotionList] = useState([
     { text: "불안해요", isPick: false },
@@ -104,7 +105,7 @@ const RecordStep2 = () => {
     <>
       <C.Header />
       <TextWrapper>
-        <Bold>원설아</Bold> <br />
+        <Bold>{window?.localStorage.getItem("userName")}</Bold> <br />
         님, 오늘 하루는 어떠세요? (최대 3개의 아이콘을 골라주세요.)
       </TextWrapper>
       <Container>

@@ -12,7 +12,6 @@ function App() {
           <Route path="/record/step3" element={<P.RecordStep3 />}></Route>
           <Route path="/record/step4" element={<P.RecordStep4 />}></Route>
           <Route path="/chat" element={<P.Chat />}></Route>
-          <Route path="/notloggedin" element={<P.NotLoggedIn />}></Route>
           <Route path="/calender" element={<P.CalenderPage />}></Route>
           <Route path="/login" element={<P.Register usage="login" />}></Route>
           <Route path="/signup" element={<P.Register usage="signup" />}></Route>

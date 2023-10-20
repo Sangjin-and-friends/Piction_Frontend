@@ -1,14 +1,16 @@
 import { styled } from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ChatLog, ChatData } from "../../../state";
 import React, { useState } from "react";
 import axios from "axios";
 import * as C from "../../index";
+import { UserInfo } from "../../../state";
 
 const ChatInput = (props: any) => {
   const [currentChat, setCurrentChat] = useState("");
   const [chatLog, setChatLog] = useRecoilState(ChatLog);
   const [chatData, setChatData] = useRecoilState(ChatData);
+  const userInfo = useRecoilValue(UserInfo);
 
   return (
     <FormContainer
@@ -23,12 +25,17 @@ const ChatInput = (props: any) => {
           );
         setCurrentChat("");
         await axios
-          .post("http://localhost:3232/api/chat/chat", {
-            text: currentChat,
-          })
+          .post(
+            "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/gpt",
+            {
+              userId: localStorage.getItem("userId"),
+              question: currentChat,
+            }
+          )
           .then((res) => {
+            console.log(res.data);
             setChatData({
-              string: res.data.content,
+              string: res.data,
               isMyChat: false,
             });
           })

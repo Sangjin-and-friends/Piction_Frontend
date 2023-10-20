@@ -3,11 +3,30 @@ import * as C from "../../components/index";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { DiaryInfo, ImgInfo } from "../../state";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { useEffect } from "react";
 
 const RecordStep4 = () => {
   const [diaryInfo, setDiaryInfo] = useRecoilState(DiaryInfo);
-  const imgInfo = useRecoilValue(ImgInfo);
+  const [imgInfo, setImgInfo] = useRecoilValue(ImgInfo);
+
+  useEffect(() => {
+    console.log(imgInfo);
+  }, []);
+
+  const postDiaryInfo = () => {
+    const res = axios.post(
+      "https://port-0-piction-backend-euegqv2blnrdvf3e.sel5.cloudtype.app/api/diary",
+      {
+        userId: localStorage.getItem("userId"),
+        subject: diaryInfo.diaryTitle,
+        contents: diaryInfo.diaryContent,
+        imageURL: imgInfo,
+        date: diaryInfo.date,
+        emotions: [diaryInfo.emotion1, diaryInfo.emotion2, diaryInfo.emotion3],
+      }
+    );
+  };
 
   return (
     <>
@@ -15,7 +34,7 @@ const RecordStep4 = () => {
       <Container>
         <Title>오늘 나의 일기에요 😙</Title>
         <MainElementSection>
-          <ImgSection url={imgInfo.imgurl} />
+          <ImgSection url={imgInfo} />
           <DiarySection>
             <DiaryTitle>{diaryInfo.diaryTitle}</DiaryTitle>
             <DiaryParagraph>{diaryInfo.diaryContent}</DiaryParagraph>
@@ -24,6 +43,8 @@ const RecordStep4 = () => {
         <NextButton
           to="/calender"
           onClick={() => {
+            postDiaryInfo();
+            setImgInfo("");
             setDiaryInfo({
               date: "",
               emotion1: "",

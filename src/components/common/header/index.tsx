@@ -1,8 +1,13 @@
 import { styled } from "styled-components";
 import HeaderLogo from "../logo/headerlogo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserInfo } from "../../../state";
+import { useRecoilState } from "recoil";
 
 const Header = () => {
+  const [userInfo, setUserInfo] = useRecoilState(UserInfo);
+  const router = useNavigate();
+
   return (
     <Container>
       <MenuSection>
@@ -20,8 +25,24 @@ const Header = () => {
         </MenuText>
       </MenuSection>
       <RegisterSection>
-        <RegisterButton to="/login">로그인</RegisterButton>
-        <RegisterButton to="/signup">회원가입</RegisterButton>
+        {!window?.localStorage.getItem("userName") &&
+        !window.localStorage.getItem("userId") ? (
+          <>
+            <RegisterButton to="/login">로그인</RegisterButton>
+            <RegisterButton to="/signup">회원가입</RegisterButton>
+          </>
+        ) : (
+          <StyledButton
+            onClick={() => {
+              localStorage.removeItem("userId");
+              localStorage.removeItem("userName");
+              alert("로그아웃 성공");
+              router(0);
+            }}
+          >
+            로그아웃
+          </StyledButton>
+        )}
       </RegisterSection>
     </Container>
   );
@@ -98,6 +119,26 @@ const RegisterSection = styled.div`
 `;
 
 const RegisterButton = styled(Link)`
+  width: max-content;
+  height: min-content;
+  display: flex;
+
+  padding: 0.525rem 1.25rem 0.525rem 1.25rem;
+
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+
+  font-family: "NanumSquareRound";
+  font-size: 1rem;
+
+  border-radius: 2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const StyledButton = styled.div`
   width: max-content;
   height: min-content;
   display: flex;

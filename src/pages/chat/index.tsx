@@ -6,13 +6,10 @@ import { useEffect, useRef } from "react";
 
 const Chat = () => {
   const chat = useRef<HTMLDivElement>(null);
-
+  const Didmount = useRef(false);
   const [chatLog, setChatLog] = useRecoilState(ChatLog);
 
   const [data, setData] = useRecoilState(ChatData);
-  const fuck = () => {
-    return "sex";
-  };
 
   useEffect(() => {
     if (chat.current?.scrollHeight)
@@ -20,12 +17,14 @@ const Chat = () => {
   }, [chatLog]);
 
   useEffect(() => {
-    setChatLog(
-      chatLog.concat({
-        string: data.string,
-        isMyChat: data.isMyChat,
-      })
-    );
+    if (Didmount.current) {
+      setChatLog(
+        chatLog.concat({
+          string: data.string,
+          isMyChat: data.isMyChat,
+        })
+      );
+    } else Didmount.current = true;
   }, [data]);
 
   return (
