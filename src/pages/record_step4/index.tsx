@@ -4,15 +4,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { DiaryInfo, ImgInfo } from "../../state";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
 
 const RecordStep4 = () => {
   const [diaryInfo, setDiaryInfo] = useRecoilState(DiaryInfo);
-  const [imgInfo, setImgInfo] = useRecoilValue(ImgInfo);
-
-  useEffect(() => {
-    console.log(imgInfo);
-  }, []);
+  const [imgInfo, setImgInfo] = useRecoilState(ImgInfo);
 
   const postDiaryInfo = () => {
     const res = axios.post(
