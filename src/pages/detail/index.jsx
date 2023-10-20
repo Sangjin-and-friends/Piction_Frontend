@@ -27,8 +27,6 @@ const Detail = () => {
       });
   }, []);
 
-  console.log(data?.imageURL);
-
   return (
     <>
       <C.Header />
