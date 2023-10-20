@@ -10,6 +10,9 @@ const Chat = () => {
   const [chatLog, setChatLog] = useRecoilState(ChatLog);
 
   const [data, setData] = useRecoilState(ChatData);
+  const fuck = () => {
+    return "sex";
+  };
 
   useEffect(() => {
     if (chat.current?.scrollHeight)
