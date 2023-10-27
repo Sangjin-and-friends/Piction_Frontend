@@ -4,7 +4,7 @@ import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { error } from "console";
+import ArrowImg from "../../assets/arrow.png";
 
 interface DateItem {
   id: number;
@@ -25,10 +25,6 @@ const DATE: DateItem[] = [{ id: 0, date: dayjs().format("YYYY-MM-DD") }];
 const App = () => {
   const [value, setValue] = useState<Dayjs>(dayjs(DATE[0].date));
   const [diaryInfo, setDiaryInfo] = useState<DiaryItem[]>([]);
-
-  const isInDateArray = (date: Dayjs) => {
-    return DATE.some((d) => dayjs(d.date).isSame(date, "day"));
-  };
 
   useEffect(() => {
     const yearAndMonth = value.format("YYYY-MM");
@@ -95,11 +91,20 @@ const App = () => {
               display: "flex",
               justifyContent: "flex-end",
               marginBottom: "2rem",
+              alignItems: "center",
+              gap: "0.8rem",
             }}
           >
+            <MonthButton onClick={() => setValue(value.subtract(1, "month"))}>
+              <Limg src={ArrowImg} alt="img" />
+            </MonthButton>
             <h1>{`${value.year()}년 ${
               value.month() + 1
             }월 ${value.date()}일`}</h1>
+            <MonthButton onClick={() => setValue(value.add(1, "month"))}>
+              {" "}
+              <Rimg src={ArrowImg} alt="img" />
+            </MonthButton>
           </div>
         )}
         onSelect={(newValue) => {
@@ -127,4 +132,21 @@ const Container = styled.div`
   height: 50vh;
   margin: auto;
   padding-top: 8rem;
+`;
+
+const MonthButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+const Limg = styled.img`
+  width: 20px;
+  height: 20px;
+  transform: rotate(180deg);
+`;
+
+const Rimg = styled.img`
+  width: 20px;
+  height: 20px;
 `;
